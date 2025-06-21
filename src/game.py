@@ -1,12 +1,18 @@
 # Importing pgzero constants
 import pgzero.screen
 
-# Defining needed files
+# Local imports
+from robot import Robot
+
+# Defining needed variables
 screen: pgzero.screen.Screen
 
 # Setting window size
 WIDTH = 300
 HEIGHT = 300
+
+# Creating actors
+robot = Robot((WIDTH/2, HEIGHT/2))
 
 # Background Settings
 color = {
@@ -24,3 +30,5 @@ def get_color():
 
 def draw():
 	screen.fill(get_color())
+	robot.draw()
+
