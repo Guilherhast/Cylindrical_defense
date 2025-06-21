@@ -3,6 +3,7 @@ import pgzero.screen
 
 # Local imports
 from robot import Robot
+from platforms import Platform_Cluster
 
 # Defining needed variables
 screen: pgzero.screen.Screen
@@ -13,6 +14,7 @@ HEIGHT = 300
 
 # Creating actors
 robot = Robot((WIDTH/2, HEIGHT/2))
+cluster = Platform_Cluster()
 
 # Background Settings
 color = {
@@ -31,4 +33,5 @@ def get_color():
 def draw():
 	screen.fill(get_color())
 	robot.draw()
+	cluster.draw_all(screen)
 

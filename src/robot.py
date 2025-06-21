@@ -6,4 +6,4 @@ from pgzero.actor import Actor
 
 class Robot(Actor):
 	def __init__(self, pos):
-		super().__init__('png_scaled/runshoot__1_.png', pos)
+		super().__init__('robot/runshoot_1.png', pos)
