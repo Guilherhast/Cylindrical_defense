@@ -1,0 +1,22 @@
+{
+	"include": [ "src", ],
+	"exclude": [ "**/__pycache__" ],
+	"ignore": [ ],
+	"stubPath": "typings",
+	"venvPath": "../venv",
+	"reportMissingImports": false,
+	"reportMissingTypeStubs": true,
+	"pythonVersion": "3.13",
+	"pythonPlatform": "Linux",
+	"executionEnvironments": [
+		{
+			"root": "/",
+			"venv": ".venv",
+			"pythonVersion": "3.13",
+			"pythonPlatform": "Linux",
+			"extraPaths": [
+				""
+			]
+		}
+	]
+}

@@ -1,0 +1,6 @@
+# Cache folders
+__pycache__
+
+# Stubs folder
+/typings
+
