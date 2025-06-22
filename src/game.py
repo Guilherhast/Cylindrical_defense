@@ -51,7 +51,7 @@ actions = {
 	'left': lambda game, dt: game.scroll.scroll_left(dt),
 	'right': lambda game, dt: game.scroll.scroll_right(dt),
 	'up': lambda game, dt: game.robot.jump(dt),
-	'space': lambda game, dt: game.robot.shoot(),
+	'space': lambda game, _: game.robot.shoot(),
 }
 
 ## Update functions
@@ -69,7 +69,7 @@ def start(game, _):
 	game.platform_group = PlatformGroup(game.scroll, screen)
 	game.destroyables = bullet.DestroyableList(game.scroll)
 	#### Robot objects
-	scope = bullet.Escope(scroll_displacement, scroll_max, 0, HEIGHT)
+	scope = bullet.Scope(scroll_displacement, scroll_max + WIDTH, 0, HEIGHT)
 	bullet_factory = bullet.Bullet.create_factory('robot/objects/bullet_001.png', 100,  scope, game.scroll)
 	cannon = bullet.Cannon(bullet_factory, [0, 0], .5, game.destroyables)
 	game.robot = Robot(10, 200, screen_size, game.platform_group, cannon)
@@ -86,7 +86,9 @@ def loop(game, dt):
 ### Draw
 def update_screen(game):
 	screen.fill(get_color())
-	screen.draw.text(str(game.scroll.get_displacement()), (WIDTH/2, 50))
+	screen.draw.text(str(game.scroll.get_displacement()), (WIDTH/2, 50)) # Debug
+	screen.draw.text(str(screen.surface.get_height()), (WIDTH/2, 90)) # Debug
+
 	game.robot.draw()
 	game.platform_group.draw()
 	game.destroyables.draw()

@@ -1,5 +1,7 @@
 # File to define classes for the platforms
 ## Imports
+from random import random
+from math import floor
 from actors.scrollable import ScrollableActor
 
 ## Images thanks to
@@ -19,6 +21,11 @@ class PlatformGroup():
 		self.__state = state
 		self.create_group()
 
+	### Random y position
+	def __random_y(self):
+		level = 1 + floor(random() * 3)
+		return  self.__screen.surface.get_height() - 60 * level
+
 	### Scroll all platforms to left
 	def __scroll(self, delta):
 		for plt in self.__group:
@@ -26,9 +33,12 @@ class PlatformGroup():
 
 	### Create a group of platforms
 	def create_group(self):
+		positions = [ self.__random_y() for i in range(15) ]
+		positions.insert(0, 240)
 		self.__group = [
-					Platform((150 + 100*i, 220))
-					for i in range(20)
+					Platform((150 + 100*i, y))
+					#Platform((150 + 100*i, 240))
+					for i,y in enumerate(positions)
 				]
 
 	### Draw all platforms

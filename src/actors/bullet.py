@@ -3,7 +3,7 @@
 from actors.scrollable import ScrollableActor
 
 ## Define a scope where an object can exist
-class Escope():
+class Scope():
 	def __init__(self, x_start, x_end, y_start, y_end):
 		self.__x_range = [x_start, x_end]
 		self.__y_range = [y_start, y_end]
