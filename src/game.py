@@ -22,7 +22,7 @@ keyboard: pgzero.keyboard.Keyboard
 WIDTH = 300
 HEIGHT = 300
 
-center = (WIDTH/2, HEIGHT/2)
+screen_size = (WIDTH, HEIGHT)
 
 ### Background Settings
 color = {
@@ -59,7 +59,7 @@ def start(game, _):
 	game.controller = GameController(game, keyboard, actions)
 	game.state = GameState(300, 0, 1500, keyboard)
 	game.platform_group = PlatformGroup(game.state, screen)
-	game.robot = Robot(10, 200, center, game.platform_group)
+	game.robot = Robot(10, 200, screen_size, game.platform_group)
 
 ### Loop update interaction
 def loop(game, dt):
