@@ -1,5 +1,5 @@
 ## Class to manage game controls
-class GameController():
+class Controller():
 	def __init__(self, game, keyboard, actions = {}, post_update = None):
 		self.__post_update = post_update
 		self.__game = game

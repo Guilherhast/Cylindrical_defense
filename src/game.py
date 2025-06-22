@@ -5,14 +5,16 @@
 import pgzero.screen
 import pgzero.keyboard
 
-### Game system imports
-from gamemanager import GameManager
-from gamecontroller import GameController
+### Import system objects
+from Game.controller import Controller
+from Game.manager import Manager
 
-### Game object imports
-from gamestate import GameState
-from robot import Robot
-from platforms import PlatformGroup
+### Import actor objects
+from actors.scroll import Scroll
+from actors.robot import Robot
+from actors.platforms import PlatformGroup
+
+from actors import bullet
 
 ## Defining object types
 screen: pgzero.screen.Screen
@@ -23,6 +25,11 @@ WIDTH = 300
 HEIGHT = 300
 
 screen_size = (WIDTH, HEIGHT)
+
+### Scroll variables
+scroll_speed = -300
+scroll_max = 1500
+scroll_displacement = 0
 
 ### Background Settings
 color = {
@@ -41,9 +48,10 @@ def get_color():
 
 ## Declare actions for the each key
 actions = {
-	'left': lambda game, dt: game.state.scroll_left(dt),
-	'right': lambda game, dt: game.state.scroll_right(dt),
+	'left': lambda game, dt: game.scroll.scroll_left(dt),
+	'right': lambda game, dt: game.scroll.scroll_right(dt),
 	'up': lambda game, dt: game.robot.jump(dt),
+	'space': lambda game, dt: game.robot.shoot(),
 }
 
 ## Update functions
@@ -56,27 +64,35 @@ Unless they ask
 
 ### First update interaction
 def start(game, _):
-	game.controller = GameController(game, keyboard, actions)
-	game.state = GameState(300, 0, 1500, keyboard)
-	game.platform_group = PlatformGroup(game.state, screen)
-	game.robot = Robot(10, 200, screen_size, game.platform_group)
+	game.controller = Controller(game, keyboard, actions)
+	game.scroll = Scroll(scroll_speed, scroll_displacement, scroll_max)
+	game.platform_group = PlatformGroup(game.scroll, screen)
+	game.destroyables = bullet.DestroyableList(game.scroll)
+	#### Robot objects
+	scope = bullet.Escope(scroll_displacement, scroll_max, 0, HEIGHT)
+	bullet_factory = bullet.Bullet.create_factory('robot/objects/bullet_001.png', 100,  scope, game.scroll)
+	cannon = bullet.Cannon(bullet_factory, [0, 0], .5, game.destroyables)
+	game.robot = Robot(10, 200, screen_size, game.platform_group, cannon)
+
 
 ### Loop update interaction
 def loop(game, dt):
 	game.controller.update(dt)
-	game.state.update(dt)
+	game.scroll.update(dt)
 	game.robot.update(dt)
 	game.platform_group.update(dt)
+	game.destroyables.update(dt)
 
 ### Draw
 def update_screen(game):
 	screen.fill(get_color())
-	screen.draw.text(str(game.state.get_scroll()), (WIDTH/2, 50))
+	screen.draw.text(str(game.scroll.get_displacement()), (WIDTH/2, 50))
 	game.robot.draw()
 	game.platform_group.draw()
+	game.destroyables.draw()
 
 ## Variable to hold the game
-game = GameManager(start, loop, update_screen)
+game = Manager(start, loop, update_screen)
 
 ## Main pgzero functions
 ### Frist update

@@ -1,6 +1,6 @@
 # File to define classes for the platforms
 ## Imports
-from scrollable import ScrollableActor
+from actors.scrollable import ScrollableActor
 
 ## Images thanks to
 ### https://www.gameart2d.com/free-sci-fi-platformer-tileset.html
@@ -18,7 +18,6 @@ class PlatformGroup():
 		self.__screen = screen
 		self.__state = state
 		self.create_group()
-		self.old_scroll = state.get_scroll()
 
 	### Scroll all platforms to left
 	def __scroll(self, delta):

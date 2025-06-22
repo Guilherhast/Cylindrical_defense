@@ -1,6 +1,6 @@
 # Class to implement start function in pgzero
 # AI told me I couldn't do it
-class GameManager():
+class Manager():
 	def __init__(self, start, loop, draw):
 		self.__start = start
 		self.__loop = loop

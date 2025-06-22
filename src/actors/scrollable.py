@@ -10,4 +10,3 @@ class ScrollableActor(Actor):
 			self.pos = new_pos
 
 
-
