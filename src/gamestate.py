@@ -1,27 +1,52 @@
 class GameState:
+	# Change in x since last update
 	__delta = 0
+	__direction = 0
 
-	def __init__(self, speed, scroll, scrollable_width):
-		self.speed = speed
-		self.scroll = scroll
-		self.scrollable_width = scrollable_width
+	## Getter functions
 
+	### Get te value of x delta
 	def get_delta(self):
 		return self.__delta
 
+	### Get scroll displacement
+	def get_scroll(self):
+		return self.__scroll
+
+	## Constructor
+	def __init__(self, speed, scroll, scrollable_width, keyboard):
+		self.speed = speed
+		self.__scroll = scroll
+		self.keyboard = keyboard
+		self.scrollable_width = scrollable_width
+
+	## Calculation functions
+	### Calc constrained movement
+	def constrain_scroll(self, value):
+		return min(self.scrollable_width, max(0, value))
+
+	### Calc delta in left direction
 	def calc_scroll_left(self, dt):
-		return max(-self.speed * dt, -self.scroll)
+		return max(-self.speed * dt, -self.__scroll)
 
+	### Calc delta in right direction
 	def calc_scroll_right(self, dt):
-		return min(self.speed * dt, self.scrollable_width - self.scroll)
+		return min(self.speed * dt, self.scrollable_width - self.__scroll)
 
-	def check_keyboard(self, kbd, dt):
-		self.__delta = 0
-		if kbd.left:
-			self.__delta += self.calc_scroll_left(dt)
-		if kbd.right:
-			self.__delta += self.calc_scroll_right(dt)
-		self.update_scroll(dt)
+	## Scroll functions
+	### Scroll right
+	def scroll_right(self, _):
+		self.__direction += 1
 
-	def update_scroll(self, dt):
-		self.scroll+= self.__delta
+	### Scroll left
+	def scroll_left(self, _):
+		self.__direction -= 1
+
+	### Update scroll
+	def update(self, dt):
+		new_scroll = self.constrain_scroll(self.__scroll + self.__direction * self.speed * dt)
+		self.__delta = self.__scroll - new_scroll
+		self.__scroll = new_scroll
+		#### Clean movement direction
+		self.__direction = 0
+
