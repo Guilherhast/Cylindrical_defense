@@ -15,6 +15,7 @@ from actors.robot import Robot
 from actors.platforms import PlatformGroup
 
 from actors import bullet
+from actors import ballon
 
 ## Defining object types
 screen: pgzero.screen.Screen
@@ -67,12 +68,18 @@ def start(game, _):
 	game.controller = Controller(game, keyboard, actions)
 	game.scroll = Scroll(scroll_speed, scroll_displacement, scroll_max)
 	game.platform_group = PlatformGroup(game.scroll, screen)
+	#### General objects
 	game.destroyables = bullet.DestroyableList(game.scroll)
+	scope = bullet.Scope(-50, scroll_max + WIDTH, 0, HEIGHT)
 	#### Robot objects
-	scope = bullet.Scope(scroll_displacement, scroll_max + WIDTH, 0, HEIGHT)
 	bullet_factory = bullet.Bullet.create_factory('robot/objects/bullet_001.png', 100,  scope, game.scroll)
-	cannon = bullet.Cannon(bullet_factory, [0, 0], .5, game.destroyables)
+	cannon = bullet.Cannon(bullet_factory, [20, 2], .8, game.destroyables)
 	game.robot = Robot(10, 200, screen_size, game.platform_group, cannon)
+	#### Ballon objects
+	# Fixme change for level manager
+	ballon_factory = ballon.Balloon.create_ballon_factory(1, scope, game.scroll)
+	game.spawner = ballon.BallonSpawner(ballon_factory, 10, game.destroyables, HEIGHT)
+
 
 
 ### Loop update interaction
@@ -82,6 +89,7 @@ def loop(game, dt):
 	game.robot.update(dt)
 	game.platform_group.update(dt)
 	game.destroyables.update(dt)
+	game.spawner.update(dt)
 
 ### Draw
 def update_screen(game):

@@ -49,29 +49,32 @@ class DestroyableList(list):
 class Cannon():
 	### Create a cannon using the cannon image
 	def __init__(self, factory, gap, cool_down, destroyable_list, pos = [0,0]):
-		self.destroyable_list = destroyable_list
-		self.__factory = factory
-		self.__bullet_gap = gap
+		self._destroyable_list = destroyable_list
+		self._factory = factory
+		self._bullet_gap = gap
 		self.set_position(pos)
-		self.__default_cool_down = cool_down
-		self.__cool_down = cool_down
+		self._default_cool_down = cool_down
+		self._cool_down = cool_down
+
+	def __reset_cool_down(self):
+		self._cool_down = self._default_cool_down
 
 	def update(self, dt):
 		# Check cooldown
-		if self.__cool_down > 0:
-			self.__cool_down = max(self.__cool_down - dt, 0)
+		if self._cool_down > 0:
+			self._cool_down = max(self._cool_down - dt, 0)
 
 	### Change cannon position
 	def set_position(self, new_pos):
-		self.__pos = new_pos
-		self.__bullet_pos = (self.__pos[0] + self.__bullet_gap[0], self.__pos[1] + self.__bullet_gap[1])
+		self._pos = new_pos
+		self._bullet_pos = (self._pos[0] + self._bullet_gap[0], self._pos[1] + self._bullet_gap[1])
 
 	### Create a bullet and return it
 	def shoot(self):
 		# Check cooldown
-		if self.__factory and self.__cool_down <= 0:
-			self.destroyable_list.append(self.__factory(self.__bullet_pos))
-			self.__cool_down = self.__default_cool_down
+		if self._factory and self._cool_down <= 0:
+			self._destroyable_list.append(self._factory(self._bullet_pos))
+			self.__reset_cool_down()
 
 	def shoot_from(self, pos):
 		self.set_position(pos)

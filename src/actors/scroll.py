@@ -13,6 +13,9 @@ class Scroll:
 	def get_displacement(self):
 		return self.__displacement
 
+	def get_scrollable_width(self):
+		return self.scrollable_width
+
 	## Constructor
 	def __init__(self, speed, displacement, scrollable_width):
 		self.speed = speed
